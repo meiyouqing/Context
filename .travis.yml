@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+ - "node"
+install: npm install
+script: npm build
+after_success: "scp -r ./build/static root@121.40.125.199:/home/web/www.sohappy.com/"
+
+
+
