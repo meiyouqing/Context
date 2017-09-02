@@ -10,7 +10,7 @@ class Context extends Component {
     }
     data = null
     componentDidMount() {
-        console.log('CONTEXT')
+        // console.log('CONTEXT')
         const canvas = this.cv;
         const vcanvas = document.createElement('canvas');
         const context = this;
@@ -21,7 +21,7 @@ class Context extends Component {
                 '183, 138, 66',
                 '135, 158, 52',
                 '51, 158, 158',
-                '0, 104, 183',
+                '0, 124, 203',
                 '116, 51, 158',
             ]
         }
@@ -91,9 +91,9 @@ class Context extends Component {
                 name: o.name,
                 isPoint,
                 className: `level${len}${isPoint ? ' point' : ''}`,
-                handlePoint: context.props.handlePoint,
                 id: o.indexArr.join('-'),
                 path: o.path,
+                handleNameClick: context.props.handleNameClick,
                 style: {
                     left: x + 'px',
                     top: y + 'px',
@@ -104,7 +104,7 @@ class Context extends Component {
             vc.beginPath();
             vc.moveTo(parent.position.x * origin.scale, parent.position.y * origin.scale);
             vc.lineTo(x, y);
-            vc.strokeStyle = `rgba(${theme.branch[len - 1]},.5)`;
+            vc.strokeStyle = `rgba(${theme.branch[len - 1]},.3)`;
             vc.lineWidth = 6 / len;
             vc.stroke();
             vc.closePath();
@@ -123,34 +123,41 @@ class Context extends Component {
         }
         //ctx.scale(1,1);
         function bindEvent() {
+            let timeoutId = 0;
             document.body.onmousedown = event => {
                 if (event.button !== 0) return;
 
                 document.body.onmousemove = e => {
-                    window.requestAnimationFrame(() => {
-                        canvas.style.cursor = "url(openhand.cur),move";
-                        const _x = e.clientX;
-                        const _y = e.clientY;
-                        const x = event.clientX;
-                        const y = event.clientY;
-                        //set origin value
-                        origin.x += (_x - x) / 5;
-                        origin.y += (_y - y) / 5;
-                        //begin predraw
-                        clearNames();
-                        drawImage();
-                    })
+                    //clearTimeout(timeoutId);
+                    // timeoutId = setTimeout(() => {
+                        window.requestAnimationFrame(() => {
+                            canvas.style.cursor = "url(openhand.cur),move";
+                            const _x = e.clientX;
+                            const _y = e.clientY;
+                            const x = event.clientX;
+                            const y = event.clientY;
+                            //set origin value
+                            origin.x += (_x - x) / 5;
+                            origin.y += (_y - y) / 5;
+                            //begin predraw
+                            clearNames();
+                            drawImage();
+                        })
+                    // }, 300)
                 }
                 document.body.onmouseup = () => {
-                    document.body.onmousemove = null;
-                    document.body.onmouseup = null;
-                    canvas.style.cursor = "default";
-                    predraw();
+                    //clearTimeout(timeoutId);
+                    // console.log('mouseup')
+                    // timeoutId = setTimeout(() => {
+                        document.body.onmousemove = null;
+                        document.body.onmouseup = null;
+                        canvas.style.cursor = "default";
+                        predraw();
+                    // }, 333)
                 }
             }
 
             //mousewheel scale event
-            let timeoutId = 0;
             document.body.onwheel = document.body.onmousewheel = event => {
                 window.requestAnimationFrame(() => {
                     const wheelDelta = event.wheelDelta ? event.wheelDelta : (event.deltaY * (-40));
@@ -178,7 +185,7 @@ class Context extends Component {
                         origin.imgScale = 1;
                         predraw();
                         drawImage();
-                    }, 300)
+                    }, 100)
                 })
             }
         }
@@ -186,7 +193,7 @@ class Context extends Component {
             context.setState({ names: null })
         }
         function getContext() {
-            fetchContext.then(json => {
+            fetchContext().then(json => {
                 context.data = json;
                 predraw();
                 drawImage();

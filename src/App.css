@@ -4,12 +4,12 @@ body{overflow: hidden;margin: 0;padding: 0;width: 100%;height: 100%;background: 
 .names {position: absolute;z-index: 1;}
 .names .level1{font-size: 28px;margin:-21px 0 0 24px;}
 .names .level2{font-size: 16px;margin:-12px 0 0 16px;}
-.names .level3{font-size: 14px;margin:-10px 0 0 11px;}
+.names .level3{font-size: 13px;margin:-10px 0 0 11px;}
 .names .level4{font-size: 12px;margin:-8px 0 0 12px;}
 .names b, .names a{position: absolute;color:#777;max-width: 200px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
-.names .point{z-index: 100;cursor: pointer;font-size: 12px;margin:-8px 0 0 12px;}
-.names .point:hover{color: #fff !important;}
+.names .point{z-index: 100;cursor: pointer;font-size: 12px;margin:-13px 0 0 12px;padding: 5px 10px;}
+.names .point:hover{color: #fff !important;text-decoration: none;background: rgba(255, 255, 255, .2);border: 1px solid rgba(255, 255, 255, .5);border-radius: 2px;}
 
-.detail-container{}
+.detail-container{position: absolute;z-index: 998;top: 0;bottom: 0;left: 0;right: 0;padding: 10px 55px;}
 .mask{position: fixed;z-index: 998;top: 0;bottom: 0;left: 0;right: 0;background: rgba(255, 255, 255, .6)}
-.detail-content {position: absolute;z-index: 999; top: 55px;right: 55px;bottom: 55px;left: 55px;background: #FFF;padding: 30px;border-radius: 3px;overflow-y: auto;font-size: 13px;line-height: 1.6;}
+.detail-content {position: relative;z-index: 999;height: 100%;box-sizing: border-box;max-width: 1000px;margin: 0 auto;background: #FFF;padding: 30px;border-radius: 3px;overflow-y: auto;font-size: 13px;line-height: 1.6;}

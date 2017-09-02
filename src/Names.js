@@ -9,15 +9,15 @@ class Names extends Component {
         return (
             <div className="names" style={ style }>
             {
-                names.map(({ name, isPoint, handlePoint, className, style, id, path }) => {
+                names.map(({ name, isPoint, handleNameClick, className, style, id, path }) => {
                     if(isPoint){
                         return(
                             <Link
                             key={ id }
-                            to={ `/data_1${path}` }
+                            to={ `/vamei${path}` }
                             className={ className }
-                            onClick={ handlePoint }
                             style={ style }
+                            onClick={ () => { handleNameClick(name) } }
                             >{ name }</Link>
                         )
                     }else{

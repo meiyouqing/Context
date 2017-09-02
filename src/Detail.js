@@ -16,7 +16,7 @@ class Detail extends Component {
         this.props.unBindEvent();
     }
     getData = path => {
-        fetchArticle('/vamei'+path+'/article.json')
+        fetchArticle(path+'/article.json')
         .then(data => {
             this.setState({ html:data.content })
         })
@@ -31,7 +31,10 @@ class Detail extends Component {
         return (
             <div className="detail-container">
                 <div onClick={this.goBack} className="mask"></div>
-                <div className="detail-content" dangerouslySetInnerHTML={{ __html:html }}></div>
+                <div className="detail-content">
+                    <h1>{ this.props.title }</h1>
+                    <div dangerouslySetInnerHTML={{ __html:html }}></div>
+                </div>
             </div>
         );
     }
