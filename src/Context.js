@@ -136,9 +136,31 @@ class Context extends Component {
                             const _y = e.clientY;
                             const x = event.clientX;
                             const y = event.clientY;
-                            //set origin value
-                            origin.x += (_x - x) / 5;
-                            origin.y += (_y - y) / 5;
+                            const xrate = ((_x - x) / 5)*1.5;
+                            const yrate = ((_y - y) / 5)*1.5;
+                            // console.log(origin)
+                            // console.log(ww, wh)
+                            // const scal = 1-((1-origin.scale)*1);
+                            // const topest = (origin.y+yrate) + ((10000-2300)*scal) < wh;
+                            // const bottomest = (origin.y+yrate) + (2700*scal) > 0;
+                            // const leftest = (origin.x+xrate) + ((10000-2700)*scal) < ww;
+                            // const rightest = (origin.x+xrate) + (3300*scal) > 0;
+                            
+                            // console.log(topest, bottomest, leftest, rightest);
+                            // if(topest){
+                            //     //origin.y += 80;
+                            // }else if(bottomest){
+                            //     //origin.y -= 80;
+                            // }else if(leftest){
+                            //     //origin.x += 80;
+                            // }else if(rightest){
+                            //     //origin.x -= 80;
+                            // }else{
+                                //set origin value
+                                origin.x += xrate;
+                                origin.y += yrate;
+                            // }
+                            
                             //begin predraw
                             clearNames();
                             drawImage();
@@ -163,10 +185,10 @@ class Context extends Component {
                     const wheelDelta = event.wheelDelta ? event.wheelDelta : (event.deltaY * (-40));
                     let rate = 1;
                     //scale up limiting
-                    if (wheelDelta > 0 && origin.scale > 1.2) {
+                    if ((wheelDelta > 0 && origin.scale > 1.2) || (wheelDelta < 0 && origin.scale < 0.1)) {
                         return;
                     }
-                    rate = wheelDelta > 0 ? 1.02 : 0.98;
+                    rate = wheelDelta > 0 ? 1.12 : 0.88;
                     origin.imgScale *= rate;
                     origin.scale *= rate;
                     origin.x = Math.round((origin.x * rate) - (event.clientX * (rate - 1)));
