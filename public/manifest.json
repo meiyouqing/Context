@@ -1,5 +1,6 @@
 {
-  "short_name": "Context Map",
+  "lang": "cn",
+  "short_name": "知识地图",
   "name": "Context Map",
   "icons": [
     {
@@ -10,6 +11,7 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#333333",
+  "background_color": "#333333",
+  "description": "This web app helps you easily establish a clear concept of a kind of kownledg"
 }

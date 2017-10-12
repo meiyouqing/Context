@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "echo": "echo $npm_config_name",
     "build": "react-scripts build",
     "deploy-static": "scp -r ./build/static/** root@121.40.125.199:/home/web/www.sohappy.com/static/",
     "deploy-index": "scp -r ./build/index.html root@121.40.125.199:/home/web/www.sohappy.com/",

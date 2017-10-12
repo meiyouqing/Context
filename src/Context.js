@@ -15,6 +15,7 @@ class Context extends Component {
         const vcanvas = document.createElement('canvas');
         const context = this;
         let names = [];
+        let rect = {top:10000, bottom: 0, left:10000, right: 0};
 
         const theme = {
             branch: [
@@ -48,7 +49,12 @@ class Context extends Component {
             vcanvas.setAttribute('width', vw);
             vcanvas.setAttribute('height', vh);
             vc.clearRect(0, 0, vw, vh);
+            rect = {top:10000, bottom: 0, left:10000, right: 0};
             recurDraw(context.data);
+
+            // vc.strokeRect(rect.left, rect.top, rect.right-rect.left, rect.bottom-rect.top);
+            // vc.stroke();
+
             context.setState({
                 names,
                 namesStyle: {
@@ -86,6 +92,12 @@ class Context extends Component {
             const y = o.position.y * origin.scale;
             const isPoint = !(o.children && o.children.length)
             const len = o.indexArr.length;
+
+            //set rect of content
+            rect.top = rect.top < y ? rect.top : y;
+            rect.bottom = rect.bottom > y ? rect.bottom : y;
+            rect.left = rect.left < x ? rect.left : x;
+            rect.right = rect.right > x ? rect.right : x;
 
             names.push({
                 name: o.name,
@@ -136,31 +148,22 @@ class Context extends Component {
                             const _y = e.clientY;
                             const x = event.clientX;
                             const y = event.clientY;
-                            const xrate = ((_x - x) / 5)*1.5;
-                            const yrate = ((_y - y) / 5)*1.5;
-                            // console.log(origin)
-                            // console.log(ww, wh)
-                            // const scal = 1-((1-origin.scale)*1);
-                            // const topest = (origin.y+yrate) + ((10000-2300)*scal) < wh;
-                            // const bottomest = (origin.y+yrate) + (2700*scal) > 0;
-                            // const leftest = (origin.x+xrate) + ((10000-2700)*scal) < ww;
-                            // const rightest = (origin.x+xrate) + (3300*scal) > 0;
+                            let xrate = ((_x - x) / 5)*2;
+                            let yrate = ((_y - y) / 5)*2;
+
+                            const topest = origin.y + yrate + rect.top + 100;
+                            const bottomest = origin.y + yrate + rect.bottom - 100;
+                            const leftest = origin.x + xrate + rect.left + 100;
+                            const rightest = origin.x + xrate + rect.right -100;
+
+                            if(topest < 0 && bottomest < 0) yrate = 0;
+                            if(topest > wh && bottomest > wh) yrate = 0;
+                            if(leftest < 0 && rightest < 0) xrate = 0;
+                            if(leftest > ww && rightest > ww) xrate = 0;
                             
-                            // console.log(topest, bottomest, leftest, rightest);
-                            // if(topest){
-                            //     //origin.y += 80;
-                            // }else if(bottomest){
-                            //     //origin.y -= 80;
-                            // }else if(leftest){
-                            //     //origin.x += 80;
-                            // }else if(rightest){
-                            //     //origin.x -= 80;
-                            // }else{
-                                //set origin value
-                                origin.x += xrate;
-                                origin.y += yrate;
-                            // }
-                            
+                            origin.x += xrate;
+                            origin.y += yrate;
+
                             //begin predraw
                             clearNames();
                             drawImage();
