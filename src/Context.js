@@ -136,6 +136,8 @@ class Context extends Component {
         //ctx.scale(1,1);
         function bindEvent() {
             let timeoutId = 0;
+            let isMouseOut = false;
+            let isMouseOutFlag = false;
             document.body.onmousedown = event => {
                 if (event.button !== 0) return;
 
@@ -186,12 +188,18 @@ class Context extends Component {
             document.body.onwheel = document.body.onmousewheel = event => {
                 window.requestAnimationFrame(() => {
                     const wheelDelta = event.wheelDelta ? event.wheelDelta : (event.deltaY * (-40));
-                    let rate = 1;
                     //scale up limiting
-                    if ((wheelDelta > 0 && origin.scale > 1.2) || (wheelDelta < 0 && origin.scale < 0.1)) {
+                    //const isMouseOut = false;
+
+                    if(!isMouseOutFlag){
+                        isMouseOutFlag = true;
+                        isMouseOut = event.clientX < rect.left + origin.x || event.clientX > rect.right + origin.x || event.clientY < rect.top + origin.y || event.clientY > rect.bottom + origin.y;
+                    }
+                    if ((wheelDelta > 0 && origin.scale > 1.2) || (wheelDelta < 0 && origin.scale < 0.1) || isMouseOut) {
+                        isMouseOutFlag = false;
                         return;
                     }
-                    rate = wheelDelta > 0 ? 1.12 : 0.88;
+                    const rate = wheelDelta > 0 ? 1.12 : 0.88;
                     origin.imgScale *= rate;
                     origin.scale *= rate;
                     origin.x = Math.round((origin.x * rate) - (event.clientX * (rate - 1)));
@@ -205,6 +213,7 @@ class Context extends Component {
                         // console.log('wheel scale predraw')
                         // console.log(origin.imgScale)
                         // console.log(origin.scale)
+                        isMouseOutFlag = false;
                         vw *= origin.imgScale;
                         vh *= origin.imgScale;
                         origin.imgScale = 1;
